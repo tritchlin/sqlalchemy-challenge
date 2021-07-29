@@ -1,19 +1,21 @@
 from flask import Flask, jsonify
+from flask_sqlalchemy import SQLAlchemy
+
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func
-import os
-import sys
-sys.path.insert(0, os.getcwd()+"/SubDirectory")
-import climate_flask_data
+# import climate_flask_data.py as querydata
 
+
+# engine = create_engine("sqlite:///hawaii.sqlite")
+# Base = automap_base()
+# Base.prepare(engine, reflect=True)
+# measurement = base.classes.measurement
+# station = base.classes.station
+
+#  Create an app, being sure to pass __name__
 app = Flask(__name__)
-engine = create_engine("sqlite:///hawaii.sqlite")
-Base = automap_base()
-Base.prepare(engine, reflect=True)
-measurement = Base.classes.measurement
-station = Base.classes.station
 
 # Define what to do when a user hits the index route
 @app.route("/")
@@ -29,10 +31,10 @@ def welcome():
     )
 
 # Define what to do when a user hits the /about route
-@app.route("/api/v1.0/precipitation")
-def precipitation():
-    return querydata.precipitation()
-    return "<p>Hello, World!</p>"
+# @app.route("/api/v1.0/precipitation")
+# def precipitation():
+#     return querydata.precipitation()
+
 
 # # Define what to do when a user hits the /about route
 # @app.route("/api/v1.0/stations")
@@ -58,5 +60,5 @@ def precipitation():
 #     print("Server received request for 'About' page...")
 #     return "Welcome to my 'About' page!"
 
-if __name__ == "__main__":
-    app.run(debug=True)
+# if __name__ == "__main__":
+#     app.run(debug=True)

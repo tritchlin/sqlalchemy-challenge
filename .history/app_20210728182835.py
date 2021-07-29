@@ -9,11 +9,14 @@ sys.path.insert(0, os.getcwd()+"/SubDirectory")
 import climate_flask_data
 
 app = Flask(__name__)
+# app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///hawaii.sqlite'
+# db=SQLAlchemy(app)
+
 engine = create_engine("sqlite:///hawaii.sqlite")
 Base = automap_base()
 Base.prepare(engine, reflect=True)
-measurement = Base.classes.measurement
-station = Base.classes.station
+measurement = base.classes.measurement
+station = base.classes.station
 
 # Define what to do when a user hits the index route
 @app.route("/")
@@ -31,7 +34,7 @@ def welcome():
 # Define what to do when a user hits the /about route
 @app.route("/api/v1.0/precipitation")
 def precipitation():
-    return querydata.precipitation()
+    # return querydata.precipitation()
     return "<p>Hello, World!</p>"
 
 # # Define what to do when a user hits the /about route

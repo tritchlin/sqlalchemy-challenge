@@ -29,9 +29,9 @@ def welcome():
     )
 
 # Define what to do when a user hits the /about route
-@app.route("/api/v1.0/precipitation")
-def precipitation():
-    return querydata.precipitation()
+# @app.route("/api/v1.0/precipitation")
+# def precipitation():
+    # return querydata.precipitation()
     return "<p>Hello, World!</p>"
 
 # # Define what to do when a user hits the /about route
