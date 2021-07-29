@@ -1,21 +1,21 @@
-from flask import Flask, jsonify
+import numpy as np
+
 import sqlalchemy
+from sqlalchemy.sql import select
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func
-import os
-import sys
-sys.path.insert(0, os.getcwd()+"/SubDirectory")
-import climate_flask_data
 
-app = Flask(__name__)
+from flask import Flask, request, render_template, jsonify
+
 engine = create_engine("sqlite:///hawaii.sqlite")
 Base = automap_base()
 Base.prepare(engine, reflect=True)
 measurement = Base.classes.measurement
-station = Base.classes.station
+# station = Base.classes.station
 
-# Define what to do when a user hits the index route
+app = Flask(__name__)
+
 @app.route("/")
 def welcome():
     """List all available api routes."""
@@ -28,35 +28,25 @@ def welcome():
         f"/api/v1.0/<start>/<end>"
     )
 
-# Define what to do when a user hits the /about route
 @app.route("/api/v1.0/precipitation")
 def precipitation():
-    return querydata.precipitation()
-    return "<p>Hello, World!</p>"
+    session = Session(engine)
+    results = session.query(measurement.date,measurement.prcp).all()
+    session.close()
 
-# # Define what to do when a user hits the /about route
-# @app.route("/api/v1.0/stations")
-# def about():
-#     print("Server received request for 'About' page...")
-#     return "Welcome to my 'About' page!"
+    precipitation_data =[]
 
-# # Define what to do when a user hits the /about route
-# @app.route("/api/v1.0/tobs")
-# def about():
-#     print("Server received request for 'About' page...")
-#     return "Welcome to my 'About' page!"
+    for date, prcp in results:
+        measurement_dict = {}
+        measurement[0] = date
+        measurement[1] = precipitation
+        precipitation_data.append(measurement_dict)
+    
+    return jsonify (precipitation_data)
 
-# # Define what to do when a user hits the /about route
-# @app.route("/api/v1.0/<start>")
-# def about():
-#     print("Server received request for 'About' page...")
-#     return "Welcome to my 'About' page!"
 
-# # Define what to do when a user hits the /about route
-# @app.route("/api/v1.0/<start>/<end>")
-# def about():
-#     print("Server received request for 'About' page...")
-#     return "Welcome to my 'About' page!"
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
